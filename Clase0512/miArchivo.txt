@@ -1,0 +1,3 @@
+Probando escritura en archivo
+Otra info
+Otra info

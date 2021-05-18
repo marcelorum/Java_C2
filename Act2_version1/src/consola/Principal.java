@@ -1,0 +1,166 @@
+package consola;
+
+import dominio.Genero;
+import static dominio.Genero.*;
+import dominio.EstadoAlquiler;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Scanner;
+import negocio.*;
+
+/**
+ * Paquete consola - Clase Principal. La clase representa "una interfaz" con la
+ * que el usuario interactúa ingresando y leyendo los datos.
+ *
+ * @author Angonoa, Franco.
+ */
+public class Principal {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+
+        menuOpciones();
+
+    }
+
+    public static void menuOpciones() {
+        ICatalogoPeliculas catalogo = new CatalogoPeliculasImpl(); //Objeto que permite comunicarme con la capa de negocio
+        Scanner teclado = new Scanner(System.in);
+        int opciones;
+
+        do {
+            System.out.println("\n==MENU OPCIONES=="
+                    + "\n1 - Agregar pelicula"
+                    + "\n2 - Listar peliculas"
+                    + "\n3 - Buscar peliculas"
+                    + "\n4 - Borrar pelicula"
+                    + "\n0 - Salir"
+                    + "\nIngrese una opcion: ");
+            opciones = Integer.parseInt(teclado.nextLine());
+
+            switch (opciones) {
+                case 1:
+                    System.out.println("Ingrese el nombre de la pelicula: ");
+                    String nombre = teclado.nextLine();
+
+                    LocalDate fecha = ingresarFecha();
+                    Genero genero = ingresarGenero();
+                    EstadoAlquiler estado = ingresarEstadoAlquiler();
+                    
+                    catalogo.agregarPelicula(nombre, fecha, genero, estado); //Nos comunicamos con la capa de negocio con esta llamada.                    
+                    break;
+                case 2:
+                    System.out.println(catalogo.listarPeliculas());
+                    break;
+                case 3:
+                    System.out.println("Ingrese el nombre de la pelicula a buscar: ");
+                    String nombrePelicula = teclado.nextLine();
+                    System.out.println(catalogo.buscarPelicula(nombrePelicula));
+                    break;
+                case 4:
+                    System.out.println("Ingrese el nombre de la pelicula a borrar: ");
+                    String peliculaBorrar = teclado.nextLine();
+                    catalogo.borrarPelicula(peliculaBorrar);
+                    break;
+                case 0:
+                    System.out.println("Hasta pronto!");
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+
+        } while (opciones != 0);
+    }
+
+    /**
+     * Opcion nro 1 Cargar una fecha. Este metodo permite solicitar al usuario
+     * los datos para crear una fecha y cargarla como fecha de lanzamiento de
+     * una pelicula.
+     *
+     * @return fecha de lanzamiento.
+     */
+    public static LocalDate ingresarFecha() {
+        Scanner teclado = new Scanner(System.in);
+
+        System.out.println("Ingresar el anio de extreno: ");
+        int anio = Integer.parseInt(teclado.nextLine());
+
+        System.out.println("Ingresar el numero del mes:"
+                + "\n1 - Enero\t2 - Febrero\t3 - Marzo"
+                + "\n4 - Abril\t5 - Mayo\t6 - Junio"
+                + "\n7 - Julio\t8 - Agosto\t9 - Septiembre"
+                + "\n10 - Octubre\t11 - Noviembre\t12 - Diciembre");
+        int nroMes = Integer.parseInt(teclado.nextLine());
+        Month mes = Month.of(nroMes);
+
+        System.out.println("Ingresar el dia de extreno: ");
+        int dia = Integer.parseInt(teclado.nextLine());
+
+        return LocalDate.of(anio, mes, dia);
+    }
+
+    /**
+     * Opcion nro 1 Cargar un genero. Este metodo permite solicitar al usuario
+     * los datos para cargar un genero de una pelicula.
+     *
+     * @return genero de la pelicula.
+     */
+    public static Genero ingresarGenero() {
+        Scanner teclado = new Scanner(System.in);
+
+        System.out.println("Ingresar el numero de genero:"
+                + "\n1 - Accion\t2 - Comedia\t3 - Drama"
+                + "\n4 - Terror\t5 - Musical\t6 - Ciencia ficcion"
+                + "\n7 - Guerra");
+        int nroGenero = Integer.parseInt(teclado.nextLine());
+
+        switch (nroGenero) {
+            case 1:
+                return ACCION; //Para usar solo la constante, se debe usar el import static
+            case 2:
+                return COMEDIA;
+            case 3:
+                return DRAMA;
+            case 4:
+                return TERROR;
+            case 5:
+                return MUSICAL;
+            case 6:
+                return CIENCIA_FICCION;
+            case 7:
+                return GUERRA;
+            default:
+                return null;
+        }
+
+    }
+
+    /**
+     * Opcion nro 1 Cargar un estado de alquiler. Este metodo permite solicitar
+     * al usuario los datos para cargar un estado de alquiler de una pelicula.
+     *
+     * @return estado de alquiler.
+     */
+    public static EstadoAlquiler ingresarEstadoAlquiler() {
+        Scanner teclado = new Scanner(System.in);
+
+        System.out.println("Ingresar el numero del estado de alquiler:"
+                + "\n1 - Disponible\t2 - No disponible\t3 - Alquilado");
+        int nroEstado = Integer.parseInt(teclado.nextLine());
+
+        switch (nroEstado) {
+            case 1:
+                return EstadoAlquiler.DISPONIBLE;
+            case 2:
+                return EstadoAlquiler.NO_DISPONIBLE;
+            case 3:
+                return EstadoAlquiler.ALQUILADO;
+            default:
+                return null;
+        }
+        
+    }
+
+}
