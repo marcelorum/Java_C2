@@ -1,0 +1,7 @@
+consola\Principal.class
+negocio\CatalogoPeliculasImpl.class
+datos\IAccesoDatos.class
+datos\Conexion.class
+dominio\Pelicula.class
+datos\AccesoDatosBD.class
+negocio\ICatalogoPeliculas.class
