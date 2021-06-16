@@ -45,10 +45,7 @@ public class AccesoDatosImp implements IAccesoDatos {
 
     @Override
     public void borrar(String nomCamp) {
-        Campeonato temp = buscar(nomCamp);
         arrayCamp.remove(buscar(nomCamp));
-        System.out.println("\nADVERTENCIA: El siguiente campeonato fue ELIMINADO"
-                + "\n" + temp);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class Campeonato {
 
     @Override
     public String toString() {
-        return "Nombre: " + nombre + ", Fecha Inicio: " + fechaIni + ", Fecha Fin: " + fechaFin + ", Sistema: " + sistemaCampeonato + ", Tipo: " + tipoCampeonato + ", Cantidad Equipos: " + cantidadEquipos;
+        return "{Nombre=" + nombre + ", Fecha Inicio=" + fechaIni + ", Fecha Fin=" + fechaFin + ", Sistema=" + sistemaCampeonato + ", Tipo=" + tipoCampeonato + ", Cantidad Equipos=" + cantidadEquipos + '}';
     }
 
     public long calcularDuracionCamp() {

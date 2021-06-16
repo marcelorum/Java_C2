@@ -36,70 +36,47 @@ public class GestorCampeonatoImp implements IGestorCampeonato {
     @Override
     public String listCamp() {
         Campeonato[] camp = datos.listar();
-        String lista = "";
+        String lista = "[";
         for (Campeonato x : camp) {
             lista += x + "\n";
         }
+        lista += "]";
         return lista;
     }
 
     @Override
     public String consuCamp(String nombreCamp) {
-        String info = "";
+        String info = "INFO: ";
         Campeonato camp = datos.buscar(nombreCamp);
-        if(camp != null) {
-            info += "\n Información del Campeonato"
-                    + "\n-----------------------------"
-                    + "\nNombre: " + camp.getNombre()
-                    + "\nFecha Inicio: " + camp.getFechaIni() + " || Fecha Fin: " + camp.getFechaFin()
-                    + "\nDuración: " + camp.calcularDuracionCamp() + " días"
-                    + "\nFecha límite de inscripción: " + camp.limiteInscripcion()
-                    + "\nTipo: " + camp.getTipoCampeonato() + " - Sistema: " + camp.getSistemaCampeonato()
-                    + "\nCaracterística: " + camp.getSistemaCampeonato().getCaracteristica()
-                    + "\nCantidad de Equipos: " + camp.getCantidadEquipos()
-                    + "\nCantidad de Fechas: " + camp.cuantasFechas()
-                    + "\nCantidad de Partidos: " + camp.cuantosPartidosPorFecha()
-                    + "\n-----------------------------";
-        }else{
-            info = "\nERROR: Campeonato no existe\n";
+        SistemaCampeonato sis = camp.getSistemaCampeonato();
+        if(camp != null){
+            info += "\nNombre: " + camp.getNombre();
+            info += "\nFecha Inicio: " + camp.getFechaIni() + " - Fecha Fin: " + camp.getFechaFin();
+            info += "\nDuración: " + camp.calcularDuracionCamp() + " días";
+            info += "\nFecha límite: " + camp.limiteInscripcion();
+            info += "\nTipo: " + camp.getTipoCampeonato() + " - Sistema: " + sis;
+            info += "\nCaract: " + sis.getCaracteristica();
+            info += "\nCantidad Equipos: " + camp.getCantidadEquipos();
+            info += "\nCantidad de Fechas: " + camp.cuantasFechas();
+            info += "\nCant Partidos: " + camp.cuantosPartidosPorFecha();
+            info += "\nINFO";
         }
         return info;
     }
 
     @Override
     public void delCamp(String nombreCamp) {
-        if(datos.buscar(nombreCamp) != null){
-            datos.borrar(nombreCamp);
-        }else{
-            System.out.println("\nERROR: Campeonato no existe\n");
-        }
-        
+        datos.borrar(nombreCamp);
     }
 
     @Override
     public void modEq(String nombre, int cantidadEquipos) {
-        if(datos.buscar(nombre) != null){
-            Campeonato camp = datos.buscar(nombre);
-            int eqOld = camp.getCantidadEquipos();
-            datos.modEq(nombre, cantidadEquipos);
-            int eqNew = camp.getCantidadEquipos();
-            System.out.println("Los equipos fueron cambiados de " + eqOld + " a " + eqNew);
-        }else{
-            System.out.println("\nERROR: Campeonato no existe\n");
-        }
+        datos.modEq(nombre, cantidadEquipos);
     }
 
     @Override
     public void modFecha(String nombre, LocalDate fechaFin) {
-        if(datos.buscar(nombre) != null){
-            Campeonato camp = datos.buscar(nombre);
-            LocalDate fechaOld = camp.getFechaIni();
-            datos.modFecha(nombre, fechaFin);
-            LocalDate fechaNew = camp.getFechaIni();
-            System.out.println("La fecha fue cambiada de " + fechaOld + " a " + fechaNew);
-        }else{
-            System.out.println("\nERROR: Campeonato no existe\n");
-        }
+        datos.modFecha(nombre, fechaFin);
     }
     
     private String tokenizer(String nomCamps){
@@ -108,18 +85,22 @@ public class GestorCampeonatoImp implements IGestorCampeonato {
         while(token.hasMoreTokens()){
             unToken += token.nextToken() + "\n";
         }
+        System.out.println("TOKEN: " + unToken);
         return unToken;
     }
             
+
     @Override
     public String filtrarCamp(String patron) {
         String nomCamps = datos.getNombres();
-        String filtrado = "\nFiltrados:"
-                + "\n";
+        String filtrado = "";
+
         Pattern pat = Pattern.compile(".*" +patron+ ".*");
         Matcher mat = pat.matcher(tokenizer(nomCamps));
+
         while(mat.find()){
             filtrado += mat.group() + "\n";
+            
         }
         return filtrado;
     }
